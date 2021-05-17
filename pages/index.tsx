@@ -1,18 +1,21 @@
-import config from "../config";
+declare global {
+  namespace NodeJS {
+    interface Global {
+      prisma: any;
+    }
+  }
+}
+
+import prisma from '../lib/prisma';
 import Head from "next/head";
 
-const webpack = require('webpack');
+export const getServerSideProps = async ({ req }) => {
+  const inventory = await prisma.inventory.findMany({
+  })
+  return { props: {inventory} }
+}
 
-Home.getInitialProps = async function () {
-  const { servername, username, password, database, table } = config;
-
-  console.log(`Querying database ${database}`);
-  const inventory = await db.one('SELECT * FROM inventory')
-  return { PostgreSQLData: inventory };
-};
-
-export default function Home({ PostgreSQLData }) {
-  return (
+export default ({ inventory }) =>
     <div>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,11 +35,11 @@ export default function Home({ PostgreSQLData }) {
       </Head>
       <div className="w-full text-center bg-blue-800 flex flex-wrap items-center">
         <div className="text-3xl w-1/2 text-white mx-2 md:mx-auto py-10">
-          Next.js - PostreSQL inventory data
+          Next.js - PostgreSQL inventory data
         </div>
       </div>
       <div className="bg-gray-200 py-10">
-        {PostgreSQLData.map(({id, name, quantity, date}) => (
+        {inventory.map(({id, name, quantity, date}) => (
           <div
             className="flex bg-white shadow-lg rounded-lg mx-2 md:mx-auto mb-10 max-w-2xl"
             key={id}
@@ -48,7 +51,7 @@ export default function Home({ PostgreSQLData }) {
                     {id}
                   </h2>
                   <small className="text-sm text-gray-700 object-right">
-                    InventoryItemId: {id}
+                    Id: {id}
                   </small>
                   <small className="ml-3 text-gray-700 text-sm">
                     Name: {name}
@@ -57,7 +60,7 @@ export default function Home({ PostgreSQLData }) {
                     Quantity: {quantity}
                   </small>
                   <small className="ml-3 text-gray-700 text-sm">
-                    Date: {date}
+                    Date: {date.toString().substring(0,10)}
                   </small>
                 </div>
               </div>
@@ -66,5 +69,3 @@ export default function Home({ PostgreSQLData }) {
         ))}
       </div>
     </div>
-  );
-}

@@ -5,11 +5,6 @@ const webpack = require('webpack');
 
 Home.getInitialProps = async function () {
   const { servername, username, password, database, table } = config;
-  const pgp = require('pg-promise')({
-    noWarnings: true
-  })
-
-  const db = pgp(`postgres://username:password@servername:5432/database`)
 
   console.log(`Querying database ${database}`);
   const inventory = await db.one('SELECT * FROM inventory')

@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "next": "9.5.3",
-    "pg-promise": "^10.10.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "tailwindcss": "^1.9.6"
@@ -17,7 +16,6 @@
     "fs": false,
     "path": false,
     "os": false,
-    "pg-native": false,
     "child_process": false
   }
 }

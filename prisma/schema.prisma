@@ -11,7 +11,7 @@ generator client {
 }
 
 model inventory {
-  id        Int
+  id        Int @id
   name      String
   quantity  Int
   date      DateTime
